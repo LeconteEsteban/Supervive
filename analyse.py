@@ -303,3 +303,46 @@ afficher_resultats(resultats)
 # Appel des fonctions
 meilleurs_equipements_par_champion = meilleurs_equipements(resultats)
 afficher_meilleurs_equipements(meilleurs_equipements_par_champion)
+
+# Dictionnaire des équipements idéaux 
+ideal_equipments = {
+    "Brall": ["Swiftblade", "Rampage"],
+    "Ghost": ["Swiftblade", "Mindblade"],
+    "Jin": ["Grace", "Swiftblade"],
+    "Joule": ["Grace", "Mindblade"],
+    "Myth": ["Mindblade", "Interweaver"],
+    "Shiv": ["Overdrive", "Grace"],
+    "Shrike": ["Grace", "Mindblade"],
+    "Bishop": ["Grace", "Swiftblade"],
+    "Kingpin": ["Mindblade", "Vive Infusor"],
+    "Felix": ["SoulBound", "Swiftblade"],
+    "Oath": ["Scholar", "Glacial Comet"],
+    "Elluna": ["Mindblade", "Rampage"],
+    "Zeph": ["Grace", "Mindblade"],
+    "Celeste": ["Mindblade", "Rampage"],
+    "Hudson": ["Scholar", "Glacial Comet"],
+    "Void": ["Power User", "Grace"]
+}
+
+# Fonction pour calculer l'accuracy
+def calculer_accuracy(meilleurs_equipements_par_champion, reference):
+    total_champions = len(reference)
+    correct_predictions = 0
+
+    for champion, meilleurs_equipements in reference.items():
+        if champion in meilleurs_equipements_par_champion:
+            predicted_equipements = [eq['equipement'] for eq in meilleurs_equipements_par_champion[champion]]
+            # Vérifier si les prédictions contiennent les équipements attendus
+            if set(meilleurs_equipements).issubset(set(predicted_equipements)):
+                correct_predictions += 1
+
+    # Calcul de l'accuracy
+    accuracy = correct_predictions / total_champions if total_champions > 0 else 0
+    return accuracy
+
+# Exemple d'utilisation
+resultats = calculer_scores(champ_data, equipement_data, passive_scores)
+meilleurs_equipements_par_champion = meilleurs_equipements(resultats)
+accuracy = calculer_accuracy(meilleurs_equipements_par_champion, ideal_equipments)
+
+print(f"Accuracy de la prédiction : {accuracy * 100:.2f}%")
